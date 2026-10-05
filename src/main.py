@@ -2,6 +2,7 @@ import sys
 
 from PySide6.QtWidgets import (
     QApplication,
+    QFileDialog,
     QLabel,
     QMainWindow,
     QPushButton,
@@ -29,10 +30,25 @@ class VideoConverter(QMainWindow):
         title = QLabel("Video Converter")
         title.setStyleSheet("font-size: 32px; font-weight: bold;")
         layout.addWidget(title)
+        
+        self.file_label = QLabel("No video selected")
+        layout.addWidget(self.file_label)
 
         # Select button
         select_button = QPushButton("Select Video")
+        select_button.clicked.connect(self.select_video)
         layout.addWidget(select_button)
+    
+    def select_video(self):
+            file_path, _ = QFileDialog.getOpenFileName(
+                self,
+                "Select Video",
+                "",
+                "Video Files (*.mp4 *.mkv *.avi *.mov *.webm *.flv *.wmv);;All Files (*)",
+            )
+
+            if file_path:
+                self.file_label.setText(file_path)
 
 
 app = QApplication(sys.argv)
